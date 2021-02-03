@@ -62,6 +62,11 @@
       this.getHomeGoods('new')
       this.getHomeGoods('sell')
     },
+    mounted() {
+      this.$bus.$on('itemImageLoad', () => {
+        this.$refs.scroll.refresh()
+      })
+    },
     computed: {
       goodsShow() {
         return this.goods[this.currentType].list
