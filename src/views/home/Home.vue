@@ -9,7 +9,7 @@
       <home-swiper :banners="banners"/>
       <recommend-view :recommends="recommends"/>
       <feature-view></feature-view>
-      <TabControl class="tab-control" :titles="['流行', '新款', '精选']"
+      <TabControl ref="tabControl" :titles="['流行', '新款', '精选']"
                   @tabClick="tabClick"></TabControl>
       <GoodsList :goods="goodsShow"/>
     </Scroll>
@@ -29,6 +29,7 @@
   import BackTop from "@/components/content/backTop/BackTop";
 
   import {getHomeMultidata, getHomeGoods} from "network/home";
+  import {debounce} from "common/utils";
 
   export default {
     name: "Home",
@@ -52,7 +53,8 @@
           "sell": {page: 0, list: []}
         },
         currentType: 'pop',
-        isShowBackTop: true
+        isShowBackTop: true,
+        offsetTop:0
       }
     },
     created() {
@@ -63,9 +65,13 @@
       this.getHomeGoods('sell')
     },
     mounted() {
+      const refresh = debounce(this.$refs.scroll.refresh, 200)
       this.$bus.$on('itemImageLoad', () => {
-        this.$refs.scroll.refresh()
+        refresh()
       })
+
+      //tabControl吸顶效果
+      console.log(this.$refs.tabControl.$el.offsetTop);
     },
     computed: {
       goodsShow() {
@@ -113,7 +119,7 @@
           this.getHomeGoods(this.currentType)
 
           this.$refs.scroll.scroll.refresh()
-      }
+      },
     }
   }
 </script>
@@ -132,12 +138,6 @@
     left: 0;
     right: 0;
     top: 0;
-    z-index: 9;
-  }
-
-  .tab-control {
-    position: sticky;
-    top: 44px;
     z-index: 9;
   }
 

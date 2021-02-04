@@ -32,17 +32,19 @@ export default {
           pullUpLoad: this.pullUpLoad
     })
 
-    this.scroll.on('scroll', (position) => {
-      // console.log(position);
-      this.$emit('scroll', position)
-    })
+    if (this.probeType == 2 || this.probeType == 3) {
+      this.scroll.on('scroll', (position) => {
+        // console.log(position);
+        this.$emit('scroll', position)
+      })
+    }
 
-    this.scroll.on('pullingUp', () => {
-      // console.log('上拉加载');
-      this.$emit('pullingUp')
-    })
-
-    // console.log(this.scroll);
+    if(this.pullUpLoad) {
+      this.scroll.on('pullingUp', () => {
+        // console.log('上拉加载');
+        this.$emit('pullingUp')
+      })
+    }
   },
   methods: {
     scrollTo(x, y, time=300) {
