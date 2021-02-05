@@ -1,15 +1,19 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <TabControl ref="tabControl1"
+                :titles="['流行', '新款', '精选']"
+                @tabClick="tabClick" class="tab-control" v-show="isFixed"></TabControl>
     <Scroll class="content"
             ref="scroll"
             :probe-type="3"
             @scroll="contentScroll"
             :pull-up-load="true" @pullingUp="loadMore">
-      <home-swiper :banners="banners"/>
+      <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
       <recommend-view :recommends="recommends"/>
       <feature-view></feature-view>
-      <TabControl ref="tabControl" :titles="['流行', '新款', '精选']"
+      <TabControl ref="tabControl2"
+                  :titles="['流行', '新款', '精选']"
                   @tabClick="tabClick"></TabControl>
       <GoodsList :goods="goodsShow"/>
     </Scroll>
@@ -54,7 +58,9 @@
         },
         currentType: 'pop',
         isShowBackTop: true,
-        offsetTop:0
+        offsetTop:0,
+        isFixed: false,
+        saveY: 0
       }
     },
     created() {
@@ -69,14 +75,18 @@
       this.$bus.$on('itemImageLoad', () => {
         refresh()
       })
-
-      //tabControl吸顶效果
-      console.log(this.$refs.tabControl.$el.offsetTop);
     },
     computed: {
       goodsShow() {
         return this.goods[this.currentType].list
-      }
+      },
+    },
+    activated() {
+        this.$refs.scroll.scrollTo(0, this.saveY, 0)
+        this.$refs.scroll.refresh()
+    },
+    deactivated() {
+        this.saveY = this.$refs.scroll.scroll.y
     },
     methods: {
       getHomeMultidata() {
@@ -108,18 +118,28 @@
             this.currentType = 'sell'
             break
         }
+        this.$refs.tabControl1.currentIndex = index;
+        this.$refs.tabControl2.currentIndex = index;
+
       },
       backClick() {
           this.$refs.scroll.scrollTo(0, 0)
       },
       contentScroll(position) {
+        //1.决定BackTop是否显示
           this.isShowBackTop = (-position.y) > 1000
+        //2.决定tabControl是否吸顶(position: fixed)
+          this.isFixed = (-position.y) > this.offsetTop
       },
       loadMore() {
           this.getHomeGoods(this.currentType)
 
           this.$refs.scroll.scroll.refresh()
       },
+      //tabControl吸顶
+      swiperImageLoad() {
+        this.offsetTop = this.$refs.tabControl2.$el.offsetTop
+      }
     }
   }
 </script>
@@ -134,11 +154,11 @@
     background-color: var(--color-tint);
     color: #fff;
 
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    z-index: 9;
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*right: 0;*/
+    /*top: 0;*/
+    /*z-index: 9;*/
   }
 
   .content {
@@ -149,5 +169,10 @@
     bottom: 49px;
     left: 0;
     right: 0;
+  }
+
+  .tab-control {
+    position: relative;
+    z-index: 9;
   }
 </style>
