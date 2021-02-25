@@ -6,6 +6,8 @@
           <detail-base-info :goods="goods"/>
           <detail-shop-info :shop-info="shopInfo"/>
           <detail-goods-info :DetailGoodsInfo="detailGoodsInfo" @imageLoad="imageLoad"/>
+          <detail-params-info :item-params="itemParams"/>
+          <detail-comment-info :comment-info="commentInfo"/>
         </Scroll>
     </div>
 </template>
@@ -16,6 +18,8 @@
   import DetailBaseInfo from "./childComponts/DetailBaseInfo";
   import DetailShopInfo from "./childComponts/DetailShopInfo";
   import DetailGoodsInfo from "./childComponts/DetailGoodsInfo";
+  import DetailParamsInfo from "@/views/detail/childComponts/DetailParamsInfo";
+  import DetailCommentInfo from "@/views/detail/childComponts/DetailCommentInfo";
 
   import Scroll from "../../components/common/scroll/Scroll";
 
@@ -28,7 +32,9 @@
           DetailBaseInfo,
           DetailShopInfo,
           Scroll,
-          DetailGoodsInfo
+          DetailGoodsInfo,
+          DetailParamsInfo,
+          DetailCommentInfo
         },
       data() {
           return {
@@ -36,7 +42,9 @@
             topImages: [],
             goods: {},
             shopInfo: {},
-            detailGoodsInfo: {}
+            detailGoodsInfo: {},
+            itemParams: {},
+            commentInfo: {}
           }
         },
       created() {
@@ -57,6 +65,14 @@
 
           //5.保存商品的详情数据
           this.detailGoodsInfo = data.detailInfo;
+
+          //6.取出参数的信息
+          this.itemParams = data.itemParams
+
+          //7.取出评论信息
+          if(data.rate.cRate !== 0) {
+            this.commentInfo = data.rate.list[0]
+          }
         })
       },
       methods: {
