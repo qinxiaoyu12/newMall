@@ -8,6 +8,7 @@
           <detail-goods-info :DetailGoodsInfo="detailGoodsInfo" @imageLoad="imageLoad"/>
           <detail-params-info :item-params="itemParams"/>
           <detail-comment-info :comment-info="commentInfo"/>
+          <goods-list :goods="recommends"></goods-list>
         </Scroll>
     </div>
 </template>
@@ -22,9 +23,12 @@
   import DetailCommentInfo from "@/views/detail/childComponts/DetailCommentInfo";
 
   import Scroll from "../../components/common/scroll/Scroll";
+  import GoodsList from "@/components/content/goods/GoodsList";
 
-  import {getDetail, Goods, shop} from "@/network/detail";
-    export default {
+  import {getDetail, Goods, shop, getRecommends} from "@/network/detail";
+  import {itemListenerMixin} from "@/common/mixin";
+
+  export default {
         name: "Detail",
         components: {
           DetailNavBar,
@@ -34,8 +38,10 @@
           Scroll,
           DetailGoodsInfo,
           DetailParamsInfo,
-          DetailCommentInfo
+          DetailCommentInfo,
+          GoodsList
         },
+    mixins: [itemListenerMixin],
       data() {
           return {
             iid: null,
@@ -44,7 +50,8 @@
             shopInfo: {},
             detailGoodsInfo: {},
             itemParams: {},
-            commentInfo: {}
+            commentInfo: {},
+            recommends: [],
           }
         },
       created() {
@@ -52,7 +59,7 @@
 
         //2.根据iid请求详细数据
         getDetail(this.iid).then(res => {
-          console.log(res);
+          // console.log(res);
           const data = res.result;
           this.topImages = data.itemInfo.topImages
 
@@ -74,13 +81,25 @@
             this.commentInfo = data.rate.list[0]
           }
         })
+
+        //3.请求推荐数据
+        getRecommends().then(res => {
+          // console.log(res);
+          this.recommends = res.data.list
+        })
       },
       methods: {
         imageLoad() {
           this.$refs.scroll.refresh()
         }
-      }
+      },
+      mounted() {
+
+      },
+    destroyed() {
+          this.$bus.$off('itemImageLoad', this.itemImgListener)
     }
+  }
 </script>
 
 <style scoped>
