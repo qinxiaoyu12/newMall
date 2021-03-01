@@ -1,14 +1,14 @@
 <template>
     <div id="detail">
-        <detail-nav-bar class="detail-bar"/>
+        <detail-nav-bar class="detail-bar" @titleClick="titleClick"/>
         <Scroll class="content" ref="scroll">
           <detail-swiper :topImages="topImages"/>
           <detail-base-info :goods="goods"/>
           <detail-shop-info :shop-info="shopInfo"/>
           <detail-goods-info :DetailGoodsInfo="detailGoodsInfo" @imageLoad="imageLoad"/>
-          <detail-params-info :item-params="itemParams"/>
-          <detail-comment-info :comment-info="commentInfo"/>
-          <goods-list :goods="recommends"></goods-list>
+          <detail-params-info ref="params" :item-params="itemParams"/>
+          <detail-comment-info ref="comment" :comment-info="commentInfo"/>
+          <goods-list ref="recommend" :goods="recommends"></goods-list>
         </Scroll>
     </div>
 </template>
@@ -27,6 +27,7 @@
 
   import {getDetail, Goods, shop, getRecommends} from "@/network/detail";
   import {itemListenerMixin} from "@/common/mixin";
+  import {debounce} from "@/common/utils";
 
   export default {
         name: "Detail",
@@ -52,6 +53,8 @@
             itemParams: {},
             commentInfo: {},
             recommends: [],
+            themeTopYs: [],
+            getThemeTopYs: null
           }
         },
       created() {
@@ -87,14 +90,30 @@
           // console.log(res);
           this.recommends = res.data.list
         })
+
+        //4.给getThemeTopYs赋值
+        this.getThemeTopYs = debounce(() => {
+          this.themeTopYs = [];
+          this.themeTopYs.push(0);
+          this.themeTopYs.push(this.$refs.params.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
+          this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+          console.log(this.themeTopYs);
+        }, 100)
       },
       methods: {
         imageLoad() {
-          this.$refs.scroll.refresh()
+          this.newRefresh()
+          this.getThemeTopYs()
+        },
+        titleClick(index) {
+          // console.log(index);
+          this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100);
         }
       },
       mounted() {
-
+      },
+      updated() {
       },
     destroyed() {
           this.$bus.$off('itemImageLoad', this.itemImgListener)
