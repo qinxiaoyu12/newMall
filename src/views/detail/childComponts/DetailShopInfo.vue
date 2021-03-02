@@ -35,7 +35,7 @@
 
 <script>
     export default {
-        name: "",
+        name: "DetailShopInfo",
       props: {
           shopInfo: {
             type: Object,
