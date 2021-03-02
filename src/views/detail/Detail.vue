@@ -99,6 +99,7 @@
         this.themeTopYs.push(this.$refs.params.$el.offsetTop)
         this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
         this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
+        this.themeTopYs.push(Number.MAX_VALUE)
         console.log(this.themeTopYs);
       }, 100)
     },
@@ -114,11 +115,10 @@
       ContentScroll(position) {
         //1.获取Y值
         const positionY = -position.y
-
         let length = this.themeTopYs.length
         //2.positionY与主题中的值进行比较
-        for (let i = 0; i < length; i++) {
-          if (this.currentIndex !== i && ((i < length - 1 && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i + 1]) || (i === length - 1 && (positionY >= this.themeTopYs[i])))) {
+        for (let i = 0; i < length - 1; i++) {
+          if (this.currentIndex !== i && ((i < length - 1 && positionY >= this.themeTopYs[i] && positionY < this.themeTopYs[i + 1]))) {
                 this.currentIndex = i;
                 this.$refs.nav.currentIndex = this.currentIndex;
           }
