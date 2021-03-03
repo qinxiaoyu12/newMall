@@ -6,7 +6,6 @@
      <span class="price">{{goodsItem.price}}</span>
      <span class="collect">{{goodsItem.cfav}}</span>
    </div>
-
  </div>
 </template>
 
@@ -33,7 +32,7 @@ export default {
     showImage() {
       return this.goodsItem.image || this.goodsItem.show.img
     }
-  }
+  },
 }
 </script>
 
