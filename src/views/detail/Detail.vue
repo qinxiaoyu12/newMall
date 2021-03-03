@@ -1,7 +1,7 @@
 <template>
     <div id="detail">
         <detail-nav-bar class="detail-bar" @titleClick="titleClick"/>
-        <Scroll class="content" ref="scroll">
+        <Scroll class="content" @scroll="contentScroll" ref="scroll">
           <detail-swiper :topImages="topImages"/>
           <detail-base-info :goods="goods"/>
           <detail-shop-info :shop-info="shopInfo"/>
@@ -10,6 +10,8 @@
           <detail-comment-info ref="comment" :comment-info="commentInfo"/>
           <goods-list ref="recommend" :goods="recommends"></goods-list>
         </Scroll>
+        <BackTop @click.native="backClick" v-show="isShowBackTop"/>
+        <detail-bottom-bar/>
     </div>
 </template>
 
@@ -21,12 +23,13 @@
   import DetailGoodsInfo from "./childComponts/DetailGoodsInfo";
   import DetailParamsInfo from "@/views/detail/childComponts/DetailParamsInfo";
   import DetailCommentInfo from "@/views/detail/childComponts/DetailCommentInfo";
+  import DetailBottomBar from "@/views/detail/childComponts/DetailBottomBar";
 
   import Scroll from "../../components/common/scroll/Scroll";
   import GoodsList from "@/components/content/goods/GoodsList";
 
   import {getDetail, Goods, shop, getRecommends} from "@/network/detail";
-  import {itemListenerMixin} from "@/common/mixin";
+  import {itemListenerMixin, showBackTop} from "@/common/mixin";
   import {debounce} from "@/common/utils";
 
   export default {
@@ -40,9 +43,10 @@
           DetailGoodsInfo,
           DetailParamsInfo,
           DetailCommentInfo,
-          GoodsList
+          GoodsList,
+          DetailBottomBar,
         },
-    mixins: [itemListenerMixin],
+    mixins: [itemListenerMixin,showBackTop],
       data() {
           return {
             iid: null,
@@ -54,7 +58,7 @@
             commentInfo: {},
             recommends: [],
             themeTopYs: [],
-            getThemeTopYs: null
+            getThemeTopYs: null,
           }
         },
       created() {
@@ -109,7 +113,12 @@
         titleClick(index) {
           // console.log(index);
           this.$refs.scroll.scrollTo(0, -this.themeTopYs[index], 100);
-        }
+        },
+        contentScroll(position) {
+          this.showBackTop(position)
+          //2.决定tabControl是否吸顶(position: fixed)
+          this.isFixed = (-position.y) > this.offsetTop
+        },
       },
       mounted() {
       },
