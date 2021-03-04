@@ -1,7 +1,7 @@
 <template>
     <div id="detail">
         <detail-nav-bar class="detail-bar" @titleClick="titleClick"/>
-        <Scroll class="content" @scroll="contentScroll" ref="scroll">
+        <Scroll class="content" @scroll="contentScroll" ref="scroll"  :probe-type="3">
           <detail-swiper :topImages="topImages"/>
           <detail-base-info :goods="goods"/>
           <detail-shop-info :shop-info="shopInfo"/>
