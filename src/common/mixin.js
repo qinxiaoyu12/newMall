@@ -23,7 +23,7 @@ export const showBackTop = {
   },
   data() {
     return {
-      isShowBackTop: true,
+      isShowBackTop: false,
     }
   },
   methods: {
@@ -32,7 +32,6 @@ export const showBackTop = {
     },
     showBackTop(position) {
       this.isShowBackTop = (-position.y) > 1000
-      console.log('---');
     }
   }
 }

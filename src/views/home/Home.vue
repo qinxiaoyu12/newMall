@@ -58,7 +58,7 @@
           "sell": {page: 0, list: []}
         },
         currentType: 'pop',
-        isShowBackTop: true,
+        isShowBackTop: false,
         offsetTop:0,
         isFixed: false,
         saveY: 0,
