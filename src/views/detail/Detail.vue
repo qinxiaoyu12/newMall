@@ -136,7 +136,6 @@
     z-index: 9;
     background-color: #fff;
     height: 100vh;
-  ;
   }
 
   .content {
