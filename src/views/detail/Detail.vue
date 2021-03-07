@@ -11,7 +11,7 @@
           <goods-list ref="recommend" :goods="recommends"></goods-list>
         </Scroll>
         <BackTop @click.native="backClick" v-show="isShowBackTop"/>
-        <detail-bottom-bar/>
+        <detail-bottom-bar @addCart="addCart"/>
     </div>
 </template>
 
@@ -119,6 +119,18 @@
           //2.决定tabControl是否吸顶(position: fixed)
           this.isFixed = (-position.y) > this.offsetTop
         },
+        addCart() {
+          //1.购物车所需要展示的信息
+          const product = {}
+          product.image = this.topImages[0];
+          product.title = this.detailGoodsInfo.title;
+          product.desc = this.detailGoodsInfo.desc;
+          product.price = this.detailGoodsInfo.realPrice;
+          product.iid = this.detailGoodsInfo.iid;
+
+          //2.将商品添加到购物车里面
+          this.$store.commit('addCart', product)
+        }
       },
       mounted() {
       },
