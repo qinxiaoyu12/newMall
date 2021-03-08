@@ -59,6 +59,7 @@
             recommends: [],
             themeTopYs: [],
             getThemeTopYs: null,
+            resData: null
           }
         },
       created() {
@@ -66,7 +67,7 @@
 
         //2.根据iid请求详细数据
         getDetail(this.iid).then(res => {
-          // console.log(res);
+          console.log(this.iid);
           const data = res.result;
           this.topImages = data.itemInfo.topImages
 
@@ -79,7 +80,6 @@
 
           //5.保存商品的详情数据
           this.detailGoodsInfo = data.detailInfo;
-
           //6.取出参数的信息
           this.itemParams = data.itemParams
 
@@ -102,7 +102,7 @@
           this.themeTopYs.push(this.$refs.params.$el.offsetTop)
           this.themeTopYs.push(this.$refs.comment.$el.offsetTop)
           this.themeTopYs.push(this.$refs.recommend.$el.offsetTop)
-          console.log(this.themeTopYs);
+          // console.log(this.themeTopYs);
         }, 100)
       },
       methods: {
@@ -126,7 +126,7 @@
           product.title = this.detailGoodsInfo.title;
           product.desc = this.detailGoodsInfo.desc;
           product.price = this.detailGoodsInfo.realPrice;
-          product.iid = this.detailGoodsInfo.iid;
+          product.iid = this.iid;
 
           //2.将商品添加到购物车里面
           // this.$store.commit('addCart', product)
