@@ -67,8 +67,8 @@
 
         //2.根据iid请求详细数据
         getDetail(this.iid).then(res => {
-          console.log(this.iid);
           const data = res.result;
+          console.log(data);
           this.topImages = data.itemInfo.topImages
 
 
@@ -125,8 +125,9 @@
           product.image = this.topImages[0];
           product.title = this.detailGoodsInfo.title;
           product.desc = this.detailGoodsInfo.desc;
-          product.price = this.detailGoodsInfo.realPrice;
+          product.price = this.detailGoodsInfo.oldPrice;
           product.iid = this.iid;
+          // console.log(this.detailGoodsInfo.oldPrice)
 
           //2.将商品添加到购物车里面
           // this.$store.commit('addCart', product)

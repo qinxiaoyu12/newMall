@@ -5,8 +5,6 @@ export default {
     let oldProduct = null;
     for (let item of context.state.cartList) {
       if(item.iid === payload.iid) {
-        console.log(payload.iid);
-        // console.log(item.iid);
         oldProduct = item
       }
     }
@@ -15,12 +13,10 @@ export default {
     if (oldProduct) {
       // oldProduct.count += 1;
       context.commit(ADD_COUNTER, oldProduct)
-      console.log('===');
     } else {
       payload.count = 1;
       // context.state.cartList.push(payload)
       context.commit(ADD_TO_CART, payload)
-      console.log('---');
     }
   }
 }

@@ -27,6 +27,9 @@
 </script>
 
 <style scoped>
+  .cart {
+    height: 100vh;
+  }
   .nav-bar {
     background-color: var(--color-tint);
     color: #ffffff;
