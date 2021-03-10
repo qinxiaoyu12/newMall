@@ -5,6 +5,7 @@ export default {
     payload.count++
   },
   [ADD_TO_CART](state, payload) {
+    payload.itemActive = true
     state.cartList.push(payload)
   }
 }

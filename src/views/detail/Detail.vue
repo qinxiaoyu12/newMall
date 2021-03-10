@@ -5,7 +5,7 @@
           <detail-swiper :topImages="topImages"/>
           <detail-base-info :goods="goods"/>
           <detail-shop-info :shop-info="shopInfo"/>
-          <detail-goods-info :DetailGoodsInfo="detailGoodsInfo" @imageLoad="imageLoad"/>
+          <detail-goods-info :DetailGoodsInfo="detailGoodsInfo2" @imageLoad="imageLoad"/>
           <detail-params-info ref="params" :item-params="itemParams"/>
           <detail-comment-info ref="comment" :comment-info="commentInfo"/>
           <goods-list ref="recommend" :goods="recommends"></goods-list>
@@ -53,7 +53,8 @@
             topImages: [],
             goods: {},
             shopInfo: {},
-            detailGoodsInfo: {},
+            detailGoodsInfo1: {},
+            detailGoodsInfo2: {},
             itemParams: {},
             commentInfo: {},
             recommends: [],
@@ -68,7 +69,7 @@
         //2.根据iid请求详细数据
         getDetail(this.iid).then(res => {
           const data = res.result;
-          console.log(res);
+          // console.log(data);
           this.topImages = data.itemInfo.topImages
 
 
@@ -79,8 +80,8 @@
           this.shopInfo = new shop(data.shopInfo)
 
           //5.保存商品的详情数据
-          this.detailGoodsInfo = data.detailInfo;
-          console.log(this.detailGoodsInfo)
+          this.detailGoodsInfo2 = data.detailInfo;
+          this.detailGoodsInfo1 = data.itemInfo;
           //6.取出参数的信息
           this.itemParams = data.itemParams
 
@@ -124,9 +125,9 @@
           //1.购物车所需要展示的信息
           const product = {}
           product.image = this.topImages[0];
-          product.title = this.detailGoodsInfo.title;
-          product.desc = this.detailGoodsInfo.desc;
-          product.price = this.detailGoodsInfo.oldPrice;
+          product.title = this.detailGoodsInfo1.title;
+          product.desc = this.detailGoodsInfo1.desc;
+          product.price = this.detailGoodsInfo1.oldPrice;
           product.iid = this.iid;
 
           //2.将商品添加到购物车里面
