@@ -1,7 +1,7 @@
 <template>
   <div class="cart-list-item">
     <div class="item-selector">
-
+      <check-button @click.native="buttonClick" :is-active="product.itemActive"/>
     </div>
     <div class="item-img">
       <img :src="product.image" alt="商品图片">
@@ -18,14 +18,23 @@
 </template>
 
 <script>
+  import CheckButton from "../../../components/content/checkButtom/CheckButton";
 export default {
   name: "CartListItem",
+  components: {
+    CheckButton
+  },
   props: {
     product: {
       type: Object,
       default() {
         return {}
       }
+    }
+  },
+  methods: {
+    buttonClick() {
+      this.product.itemActive = ! this.product.itemActive
     }
   }
 }
