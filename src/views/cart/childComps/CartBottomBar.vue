@@ -23,7 +23,7 @@
           return '￥' + this.$store.state.cartList.filter(item => {
             return item.itemActive
           }).reduce((preValue, item) => {
-              return preValue + item.price * item.count
+              return preValue + (item.price * item.count)
           }, 0).toFixed(2)
         }
       }

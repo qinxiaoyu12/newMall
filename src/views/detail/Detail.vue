@@ -82,6 +82,7 @@
           //5.保存商品的详情数据
           this.detailGoodsInfo2 = data.detailInfo;
           this.detailGoodsInfo1 = data.itemInfo;
+          console.log(this.detailGoodsInfo1)
           //6.取出参数的信息
           this.itemParams = data.itemParams
 
@@ -127,7 +128,7 @@
           product.image = this.topImages[0];
           product.title = this.detailGoodsInfo1.title;
           product.desc = this.detailGoodsInfo1.desc;
-          product.price = this.detailGoodsInfo1.oldPrice;
+          product.price = this.detailGoodsInfo1.lowPrice;
           product.iid = this.iid;
 
           //2.将商品添加到购物车里面
