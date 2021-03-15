@@ -1,7 +1,8 @@
 <template>
     <div class="cart-bottom-bar">
       <div class="check-content">
-        <check-button class="check-button"/>
+        <check-button class="check-button"
+                      :is-active="isSelectAll" @click.native="buttonClick"/>
         <span>全选</span>
       </div>
 
@@ -32,6 +33,22 @@
         },
         checkLength() {
           return this.$store.state.cartList.filter(item => item.itemActive).length
+        },
+        isSelectAll() {
+          if (this.$store.state.cartList.length === 0) {
+            return false;
+          } else {
+            return !(this.$store.state.cartList.filter(item => !item.itemActive).length)
+          }
+        }
+      },
+      methods: {
+        buttonClick() {
+          if (this.isSelectAll) {
+            this.$store.state.cartList.forEach(item => item.itemActive = false)
+          } else {
+            this.$store.state.cartList.forEach(item => item.itemActive = true)
+          }
         }
       }
     }
